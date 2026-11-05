@@ -37,8 +37,8 @@ export default function Hero() {
           {/* Action Button */}
           <div className="pt-2">
             <Link
-              href="/products"
-              className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-[#0b8043] hover:bg-[#096e38] text-white font-bold text-sm shadow-sm transition-colors"
+              href="#all-products"
+              className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-[#0b8043] hover:bg-[#096e38] text-white font-bold text-sm shadow-sm transition-colors scroll-smooth"
             >
               সব পণ্য দেখুন
             </Link>
