@@ -13,38 +13,35 @@ import {
 } from "@heroui/react";
 import { Mail, Lock, Eye, EyeOff, ArrowLeft } from "lucide-react";
 import Link from "next/link";
-// import { signIn } from "@/lib/auth-client";
+import { signIn } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 
 export default function SignInPage() {
   const [isVisible, setIsVisible] = useState(false);
 
-  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData);
-    console.log("Form Data:", data);
+ const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  const formData = new FormData(e.currentTarget);
+  const data = Object.fromEntries(formData);
 
-    /*
-    const { data: resData, error } = await signIn.email({
-      email: data.email as string, // required, The email address of the user.
-      password: data.password as string, // required, The password of the user. It should be at least 8 characters long and max 128 by default.
-      callbackURL: "/", // An optional URL to redirect to after the user signs in. (optional)
-    });
-    if (error) {
-      toast.error(error.message as string);
-    }
-    */
-  };
+  const { data: resData, error } = await signIn.email({
+    email: data.email as string,
+    password: data.password as string,
+    callbackURL: "/",
+  });
+  if (error) {
+    toast.error(error.message as string);
+  } else {
+    toast.success("Login Successful");
+  }
+};
 
   const handleGoogleSignIn = async () => {
-    /*
-    const data = await signIn.social({
-      provider: "google",
-    });
-    console.log(data);
-    */
-  };
+  await signIn.social({
+    provider: "google",
+    callbackURL: "/",
+  });
+};
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-[#f8fafc] p-4">

@@ -13,7 +13,7 @@ import {
 } from "@heroui/react";
 import { User, Mail, Lock, Eye, EyeOff, ArrowLeft } from "lucide-react";
 import Link from "next/link";
-// import { signIn, signUp } from "@/lib/auth-client";
+import { signIn, signUp } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
@@ -23,40 +23,40 @@ export default function SignUpPage() {
   const router = useRouter();
 
   const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setPasswordError("");
+  e.preventDefault();
+  setPasswordError("");
 
-    const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData.entries());
+  const formData = new FormData(e.currentTarget);
+  const data = Object.fromEntries(formData.entries());
 
-    if (data.password !== data.confirmPassword) {
-      setPasswordError("পাসওয়ার্ড দুটি মিলছে না!");
-      return;
-    }
+  if (data.password !== data.confirmPassword) {
+    setPasswordError("পাসওয়ার্ড দুটি মিলছে না!");
+    return;
+  }
 
-    console.log("Sign Up Data:", data);
-    
-    // Uncomment when @/lib/auth-client is configured
-    /*
-    const { data: resData, error } = await signUp.email({
-      email: data.email as string, // user email address
-      password: data.password as string, // user password -> min 8 characters by default
-      name: data.name as string, // user display name
-    });
-    // console.log(resData, error);
-    if (resData?.user.name) {
-      toast.success("Account Created Successfully, Login to continue");
-      router.push("/signin");
-    }
-    */
-  };
+  const { data: resData, error } = await signUp.email({
+    email: data.email as string,
+    password: data.password as string,
+    name: data.name as string,
+  });
+
+  if (error) {
+    toast.error(error.message as string);
+    return;
+  }
+
+  if (resData) {
+    toast.success("Account Created Successfully, Login to continue");
+    router.push("/signin");
+  }
+};
 
   const handleGoogleSignIn = async () => {
-    // const data = await signIn.social({
-    //   provider: "google",
-    // });
-    // console.log(data);
-  };
+  await signIn.social({
+    provider: "google",
+    callbackURL: "/",
+  });
+};
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-[#f8fafc] p-4">
