@@ -53,7 +53,7 @@ export default function Hero() {
             width={320}
             height={260}
             priority
-            className="w-auto h-auto max-height: 240px sm:max-height: 280px; object-contain"
+            className="w-auto h-auto max-h-[240px] sm:max-h-[280px] object-contain"
           />
         </div>
 
