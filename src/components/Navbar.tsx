@@ -27,14 +27,30 @@ export default function Navbar() {
     year: "numeric",
   });
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`);
-      const data = await res.json();
-    //   setCategories(data);
-    };
-    fetchCategories();
-  }, []);
+ useEffect(() => {
+  const fetchCategories = async () => {
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      if (!apiUrl) return;
+
+      const res = await fetch(`${apiUrl}/categories`);
+      
+      if (!res.ok) {
+        console.error("Network response was not ok");
+        return;
+      }
+
+      const text = await res.text(); 
+      if (!text) return;
+
+      const data = JSON.parse(text);
+      // setCategories(data);
+    } catch (error) {
+      console.error("Failed to fetch categories:", error);
+    }
+  };
+  fetchCategories();
+}, []);
 
   const { data, isPending } = useSession();
   const handleSignOut = async () => {
