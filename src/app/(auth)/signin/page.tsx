@@ -11,40 +11,28 @@ import {
   Separator,
   TextField,
 } from "@heroui/react";
-import { User, Mail, Lock, Eye, EyeOff, ArrowLeft } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 // import { signIn } from "@/lib/auth-client";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
 
-export default function SignUpPage() {
+export default function SignInPage() {
   const [isVisible, setIsVisible] = useState(false);
-  const [passwordError, setPasswordError] = useState("");
-  const router = useRouter();
 
   const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setPasswordError("");
-
     const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData.entries());
-
-    if (data.password !== data.confirmPassword) {
-      setPasswordError("পাসওয়ার্ড দুটি মিলছে না!");
-      return;
-    }
-
-    console.log("Sign In Data:", data);
+    const data = Object.fromEntries(formData);
+    console.log("Form Data:", data);
 
     /*
     const { data: resData, error } = await signIn.email({
-      email: data.email as string,
-      password: data.password as string,
+      email: data.email as string, // required, The email address of the user.
+      password: data.password as string, // required, The password of the user. It should be at least 8 characters long and max 128 by default.
+      callbackURL: "/", // An optional URL to redirect to after the user signs in. (optional)
     });
-    
-    if (resData) {
-      toast.success("Login Successful");
-      router.push("/");
+    if (error) {
+      toast.error(error.message as string);
     }
     */
   };
@@ -60,43 +48,20 @@ export default function SignUpPage() {
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-[#f8fafc] p-4">
-      <Card className="w-full max-w-[440px] p-5 sm:p-7 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 bg-white">
+      <Card className="w-full max-w-[420px] p-5 sm:p-7 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 bg-white">
         {/* Header Section */}
         <Card.Header className="flex flex-col items-center text-center gap-1.5 pb-2">
           <Card.Title className="text-2xl sm:text-3xl font-bold text-slate-900">
-            অ্যাকাউন্ট তৈরি করুন
+            সাইন ইন
           </Card.Title>
           <Card.Description className="text-xs sm:text-sm text-slate-500">
-            বিনা খরচে সাইন আপ করে সব বিস্তারিত দাম দেখুন।
+            তুলনা ও বিস্তারিত তথ্য দেখতে অ্যাকাউন্টে প্রবেশ করুন।
           </Card.Description>
         </Card.Header>
 
-        {/* Form & Social Section */}
+        {/* Main Form & Social Section */}
         <Card.Content className="flex flex-col gap-5 pt-2">
           <Form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            {/* Full Name Field */}
-            <TextField
-              name="name"
-              type="text"
-              isRequired
-              className="flex flex-col gap-1.5 w-full"
-            >
-              <Label className="text-xs sm:text-sm font-medium text-slate-700">
-                আপনার পূর্ণ নাম
-              </Label>
-              <div className="relative flex items-center">
-                <User
-                  size={18}
-                  className="pointer-events-none absolute left-3.5 text-slate-400"
-                />
-                <Input
-                  placeholder="যেমন: তানভীর আহমেদ"
-                  className="w-full h-11 pl-10 pr-3.5 rounded-xl bg-slate-50/70 border border-slate-200 text-sm text-slate-800 placeholder:text-slate-400 hover:border-slate-300 focus:border-[#0d6efd] focus:bg-white focus:outline-none transition-colors"
-                />
-              </div>
-              <FieldError className="text-xs text-red-500" />
-            </TextField>
-
             {/* Email Field */}
             <TextField
               name="email"
@@ -124,7 +89,6 @@ export default function SignUpPage() {
             <TextField
               name="password"
               type={isVisible ? "text" : "password"}
-              minLength={6}
               isRequired
               className="flex flex-col gap-1.5 w-full"
             >
@@ -137,7 +101,7 @@ export default function SignUpPage() {
                   className="pointer-events-none absolute left-3.5 text-slate-400"
                 />
                 <Input
-                  placeholder="কমপক্ষে ৬টি অক্ষর"
+                  placeholder="••••••••"
                   className="w-full h-11 pl-10 pr-10 rounded-xl bg-slate-50/70 border border-slate-200 text-sm text-slate-800 placeholder:text-slate-400 hover:border-slate-300 focus:border-[#0d6efd] focus:bg-white focus:outline-none transition-colors"
                 />
                 <button
@@ -152,41 +116,13 @@ export default function SignUpPage() {
               <FieldError className="text-xs text-red-500" />
             </TextField>
 
-            {/* Confirm Password Field */}
-            <TextField
-              name="confirmPassword"
-              type={isVisible ? "text" : "password"}
-              isRequired
-              isInvalid={!!passwordError}
-              className="flex flex-col gap-1.5 w-full"
-            >
-              <Label className="text-xs sm:text-sm font-medium text-slate-700">
-                কনফার্ম পাসওয়ার্ড
-              </Label>
-              <div className="relative flex items-center">
-                <Lock
-                  size={18}
-                  className="pointer-events-none absolute left-3.5 text-slate-400"
-                />
-                <Input
-                  placeholder="পুনরায় পাসওয়ার্ড লিখুন"
-                  className="w-full h-11 pl-10 pr-3.5 rounded-xl bg-slate-50/70 border border-slate-200 text-sm text-slate-800 placeholder:text-slate-400 hover:border-slate-300 focus:border-[#0d6efd] focus:bg-white focus:outline-none transition-colors"
-                />
-              </div>
-              {passwordError ? (
-                <span className="text-xs text-red-500">{passwordError}</span>
-              ) : (
-                <FieldError className="text-xs text-red-500" />
-              )}
-            </TextField>
-
-            {/* Register Submit Button */}
+            {/* Submit Button */}
             <Button
               type="submit"
               variant="primary"
               className="w-full h-11 mt-1 rounded-xl bg-[#0d6efd] hover:bg-blue-700 text-white font-semibold text-sm shadow-sm transition-colors"
             >
-              রেজিস্টার করুন
+              লগইন করুন
             </Button>
           </Form>
 
@@ -196,7 +132,7 @@ export default function SignUpPage() {
             <span className="text-xs text-slate-400 font-medium">অথবা</span>
           </div>
 
-          {/* Google Sign Up Button */}
+          {/* Google Login Button */}
           <Button
             type="button"
             onClick={handleGoogleSignIn}
@@ -221,7 +157,7 @@ export default function SignUpPage() {
                 d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
               />
             </svg>
-            <span>Google দিয়ে সাইন আপ করুন</span>
+            <span>Google দিয়ে লগইন করুন</span>
           </Button>
         </Card.Content>
 
@@ -230,12 +166,12 @@ export default function SignUpPage() {
         {/* Footer Section */}
         <Card.Footer className="flex flex-col items-center gap-2.5 pt-0 text-xs sm:text-sm">
           <p className="text-slate-500">
-            ইতিমধ্যে অ্যাকাউন্ট আছে?{" "}
+            নতুন ব্যবহারকারী?{" "}
             <Link
-              href="/signin"
+              href="/signup"
               className="text-[#0d6efd] font-semibold hover:underline"
             >
-              সাইন ইন করুন
+              অ্যাকাউন্ট তৈরি করুন
             </Link>
           </p>
 
