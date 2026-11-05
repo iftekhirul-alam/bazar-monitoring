@@ -41,7 +41,7 @@ const UpdateProfilePage = () => {
 
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center bg-[#f8fafc] px-4 py-12">
-      <div className="w-full max-w-[460px] flex flex-col items-center">
+      <div className="w-full max-width: 460px flex flex-col items-center">
         {/* Top Back Link */}
         <div className="w-full flex justify-start mb-6">
           <Link

@@ -45,7 +45,7 @@ export default function SignInPage() {
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-[#f8fafc] p-4">
-      <Card className="w-full max-w-[420px] p-5 sm:p-7 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 bg-white">
+      <Card className="w-full max-width: 420px p-5 sm:p-7 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 bg-white">
         {/* Header Section */}
         <Card.Header className="flex flex-col items-center text-center gap-1.5 pb-2">
           <Card.Title className="text-2xl sm:text-3xl font-bold text-slate-900">

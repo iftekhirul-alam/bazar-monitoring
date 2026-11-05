@@ -13,12 +13,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { signOut, useSession } from "@/lib/auth-client";
 import logo from "@/assets/logo-icon.png"
-// import { ICategory } from "@/types/type";
+import { ICategory } from "@/types/type";
 import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const pathname = usePathname();
-//   const [categories, setCategories] = useState<ICategory[]>([]);
+  const [categories, setCategories] = useState<ICategory[]>([]);
 
   const formattedDate = new Date().toLocaleDateString("bn-BD", {
     weekday: "long",
@@ -44,7 +44,7 @@ export default function Navbar() {
       if (!text) return;
 
       const data = JSON.parse(text);
-      // setCategories(data);
+      setCategories(data);
     } catch (error) {
       console.error("Failed to fetch categories:", error);
     }
@@ -111,17 +111,17 @@ export default function Navbar() {
                   <Dropdown.Menu
                     onAction={(key) => console.log(`Selected: ${key}`)}
                   >
-                    <Dropdown.Item id="new-file" textValue="New file">
+                    <Dropdown.Item id="new-file" textValue="New file" className="text-black">
                       <Link href={"/profile"}>প্রোফাইল</Link>
                     </Dropdown.Item>
-                    <Dropdown.Item textValue="update-profile">
+                    <Dropdown.Item textValue="update-profile" className="text-black">
                       <Link href={"/profile/update-profile"}>
                         {" "}
                         আপডেট প্রোফাইল
                       </Link>
                     </Dropdown.Item>
 
-                    <Dropdown.Item textValue="sign-out">
+                    <Dropdown.Item textValue="sign-out" >
                       <Button onClick={handleSignOut}>সাইন আউট</Button>
                     </Dropdown.Item>
                   </Dropdown.Menu>
@@ -157,7 +157,27 @@ export default function Navbar() {
           aria-label="Category Navigation"
           className="flex items-center gap-5 sm:gap-8 py-2.5 overflow-x-auto no-scrollbar"
         >
-          {/* Categories mapping if needed */}
+          {categories.map((cat) => {
+            const isActive =
+              pathname === `/${cat.slug}` ||
+              pathname === `/category/${cat.slug}`;
+
+            return (
+              <Link
+                key={cat.id}
+                href={`/category/${cat.slug}`}
+                title={cat.descriptionBn}
+                className={`flex items-center gap-1.5 text-xs sm:text-sm font-medium whitespace-nowrap py-1 transition-colors ${
+                  isActive
+                    ? "text-[#0d6efd] font-semibold"
+                    : "text-slate-700 hover:text-[#0d6efd]"
+                }`}
+              >
+                <span className="text-base leading-none">{cat.icon}</span>
+                <span>{cat.nameBn}</span>
+              </Link>
+            );
+          })}
         </nav>
       </div>
     </header>
